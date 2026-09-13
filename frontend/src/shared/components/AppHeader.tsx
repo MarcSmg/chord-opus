@@ -1,15 +1,22 @@
 // src/components/sidebar/SidebarHeader.tsx
 import { Link } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import Heading from '../ui/Heading';
 
-export const AppHeader = () => {
+interface AppHeaderProps {
+  actions?: ReactNode;
+}
+
+export const AppHeader = ({ actions }: AppHeaderProps) => {
   return (
-    <div className="flex items-center gap-3 px-6 py-3 w-full bg-surface">
+    <div className="flex w-full items-center justify-between gap-3 bg-surface px-6 ">
       
       <Link to="/" className="group">
-        <h1 className="text-xl font-black  text-content group-hover:text-primary transition-colors">
+        <Heading level={4} className="font-black text-content group-hover:text-primary transition-colors">
           ChordOpus
-        </h1>
+        </Heading>
       </Link>
+      {actions}
     </div>
   );
 };

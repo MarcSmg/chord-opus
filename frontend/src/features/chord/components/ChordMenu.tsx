@@ -1,88 +1,146 @@
-import { AnimatePresence, motion, type Variants } from "motion/react"
-import { memo, type ComponentPropsWithRef } from "react";
-import { Bookmark, MoreHoriz, Download, ShareAndroid } from "iconoir-react"
-import { MenuAction } from "../../../shared/ui/MenuAction";
+import { AnimatePresence, motion } from "motion/react"
+import { memo, useState, type ComponentPropsWithRef } from "react";
+import { Bookmark, BookmarkSolid, MoreHoriz, Download, ShareAndroid } from "iconoir-react"
+import { Tooltip } from "@/shared/ui/Tooltip";
+import { cn } from "@/shared/utils/cn";
+import { DownloadDialog } from "./DownloadDialog";
+import { chordApi } from "../../../api/chords";
+import { useSavedChords } from "@/context/SavedChordsContext";
+
+const menuButtonClass = "flex items-center justify-center size-8 rounded-full text-content-muted hover:bg-ui-elevated hover:text-primary transition-colors cursor-pointer";
 
 interface ChordMenuProps extends ComponentPropsWithRef<"div"> {
     isActive: boolean;
     onOpen: () => void;
     onClose: () => void;
-    onDownload: () => void
+    svg: SVGSVGElement | null;
+    symbol?: string;
+    frets?: readonly (number | null)[];
 }
 
-const containerVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.95, y: -8, height: "5px" },
-    visible: {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        transition: {
-            duration: 0.12,
-            ease: "easeOut",
-            staggerChildren: 0.05,
-            delayChildren: 0.02,
-        },
-        height: "auto"
-    },
-    exit: { opacity: 0, scale: 0.95, y: -8, height: "5px" },
-};
+type SaveStatus = "idle" | "saving" | "saved" | "error";
 
-const itemsVariants: Variants = {
-    hidden: { opacity: 0, y: -10 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { type: "spring", stiffness: 300, damping: 20 }
-    }
-}
+export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, className }: ChordMenuProps) => {
+    const [isDownloadOpen, setIsDownloadOpen] = useState(false);
+    const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+    const { markChordSaved } = useSavedChords();
 
-export const ChordMenu = memo(({ isActive, onOpen, onClose, onDownload, className }: ChordMenuProps) => {
+    const handleSave = async () => {
+        if (!symbol || !frets || saveStatus === "saving") return;
+
+        setSaveStatus("saving");
+        try {
+            await chordApi.saveChord({ symbol, voicing: { frets } });
+            markChordSaved(frets);
+            setSaveStatus("saved");
+        } catch {
+            setSaveStatus("error");
+        } finally {
+            setTimeout(() => setSaveStatus("idle"), 1500);
+        }
+    };
+
+    const bookmarkIcon = saveStatus === "saved"
+        ? <BookmarkSolid className="size-4 text-status-success" strokeWidth={2} />
+        : saveStatus === "error"
+            ? <Bookmark className="size-4 text-status-error" strokeWidth={2} />
+            : <Bookmark className="size-4" strokeWidth={2} />;
 
     return (
-        <div className={` ${className} relative flex flex-col justify-center items-center w-fit rounded-lg hover:bg-ui-surface`} >
+        <div className={cn(className, "relative flex flex-col justify-center items-center w-fit rounded-lg hover:bg-ui-surface")} >
             <button
                 type="button"
                 onClick={(e) => {
                     e.stopPropagation(); // Stop click from triggering row actions
                     isActive ? onClose() : onOpen();
                 }}
-                className={`p-1 rounded-md transition-colors cursor-pointer ${isActive ? 'text-primary bg-ui-elevated' : 'text-content-muted hover:text-content'}`}
+                className={cn(
+                    "p-1 rounded-md transition-colors cursor-pointer",
+                    isActive ? "text-primary bg-ui-elevated" : "text-content-muted hover:text-content"
+                )}
             >
-                <MoreHoriz className="size-5" strokeWidth={3} />
+                <MoreHoriz className="size-5 text-content" strokeWidth={3}/>
             </button>
 
             <AnimatePresence>
                 {isActive && (
                     <>
                         <motion.div
-                            initial={{ opacity: 0, filter: 'blur(4px)' }}
-                            animate={{ opacity: 0.5, filter: 'blur(0px)' }}
-                            exit={{ opacity: 0, filter: 'blur(4px)' }}
-                            className="fixed inset-0 z-60 bg-black blur-glass"
+                            initial={{ backdropFilter: "blur(0px)" }}
+                            animate={{ backdropFilter: "blur(8px)" }}
+                            exit={{ backdropFilter: "blur(0px)" }}
+                            transition={{ duration: 0.25, ease: "easeOut" }}
+                            className="fixed inset-0 z-60"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 onClose();
                             }}
-                        />
+                        >
+                            {/* Chrome doesn't render backdrop-filter on a layer whose own
+                                opacity is being animated, so the fade lives on this inner
+                                layer instead of the blurred one. */}
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 0.5 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.25, ease: "easeOut" }}
+                                className="absolute inset-0 bg-black"
+                            />
+                        </motion.div>
 
                         <motion.div
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
-                            className="absolute -right-4 -top-40 z-70 mt-2 flex flex-col gap-2 p-1 py-2 rounded-full bg-ui-card border border-stroke-strong/20 shadow-detail-md backdrop-blur-glass"
+                            initial={{ width: 40, opacity: 0 }}
+                            animate={{ width: "auto", opacity: 1 }}
+                            exit={{ width: 40, opacity: 0 }}
+                            transition={{ type: "spring", stiffness: 350, damping: 22, mass: 0.6 }}
+                            className="absolute -left-10 -translate-x-1/2 -top-90 z-100 flex flex-row items-center gap-1 p-1 rounded-full bg-ui-surface shadow-detail-md border border-stroke-strong/50 overflow-hidden"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <MenuAction variants={itemsVariants} icon={<Bookmark strokeWidth={2} />} /> {/*Add to Saved Chords Button*/}
-                            <MenuAction onClick={onDownload} variants={itemsVariants} icon={<Download strokeWidth={2} />} /> {/*Download Button*/}
-                            <MenuAction variants={itemsVariants} icon={<ShareAndroid strokeWidth={2} />} /> {/*Share Button*/}
-
+                            <Tooltip label="Save" placement="top">
+                                <motion.button
+                                    type="button"
+                                    onClick={handleSave}
+                                    whileHover={{ y: -3 }}
+                                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                                    className={menuButtonClass}
+                                >
+                                    {bookmarkIcon}
+                                </motion.button>
+                            </Tooltip>
+                            <Tooltip label="Download" placement="top">
+                                <motion.button
+                                    type="button"
+                                    onClick={() => {
+                                        onClose();
+                                        setIsDownloadOpen(true);
+                                    }}
+                                    whileHover={{ y: -3 }}
+                                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                                    className={menuButtonClass}
+                                >
+                                    <Download className="size-4" strokeWidth={2} />
+                                </motion.button>
+                            </Tooltip>
+                            <Tooltip label="Share" placement="top">
+                                <motion.button
+                                    type="button"
+                                    whileHover={{ y: -3 }}
+                                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                                    className={menuButtonClass}
+                                >
+                                    <ShareAndroid className="size-4" strokeWidth={2} />
+                                </motion.button>
+                            </Tooltip>
                         </motion.div>
                     </>
                 )}
 
             </AnimatePresence>
+
+            <DownloadDialog open={isDownloadOpen} onOpenChange={setIsDownloadOpen} svg={svg} />
         </div>
     )
 }, (prev, next) => {
-    return prev.isActive === next.isActive;
+    return prev.isActive === next.isActive && prev.svg === next.svg
+        && prev.symbol === next.symbol && prev.frets === next.frets;
 });

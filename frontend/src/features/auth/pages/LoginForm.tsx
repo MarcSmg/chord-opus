@@ -15,11 +15,8 @@ export const LoginForm = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    const inputStyles = ` pl-11 py-3 w-full border-2 border-stroke-subtle 
-    rounded-xl outline-primary/50 outline-0
-    focus:outline-3 transition-all duration-100
-    `;
-    const iconStyles = `absolute left-4 text-stroke-strong`;
+    const inputStyles = "pl-11 py-3 w-full border-2 border-stroke-subtle rounded-xl outline-primary/50 outline-0 focus:outline-3 transition-all duration-100";
+    const iconStyles = "absolute left-4 text-stroke-strong";
 
     const [formInput, setFormInput] = useState({
         login: "",
@@ -51,8 +48,8 @@ export const LoginForm = () => {
                 <Input
                     type="text"
                     placeholder="Enter username or email"
-                    className={`${inputStyles}`}
-                    icon={<Mail className={`${iconStyles}`} strokeWidth={2} />}
+                    className={inputStyles}
+                    icon={<Mail className={iconStyles} strokeWidth={2} />}
                     value={formInput.login}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormInput(prv => ({ ...prv, login: e.target.value }))}
                 />
@@ -60,8 +57,8 @@ export const LoginForm = () => {
                 <Input
                     type="password"
                     placeholder="Enter your password"
-                    className={`${inputStyles}`}
-                    icon={<Lock className={`${iconStyles}`} strokeWidth={2} />}
+                    className={inputStyles}
+                    icon={<Lock className={iconStyles} strokeWidth={2} />}
                     value={formInput.password}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormInput(prv => ({ ...prv, password: e.target.value }))}
                 />

@@ -1,5 +1,5 @@
 import { api } from "./client";
-import type { ApiSavedChordResponse } from "@/types/api";
+import type { ApiSavedChordResponse, ApiCreateSavedChordRequest, ApiProgressionResponse } from "@/types/api";
 
 const savedChordsUrl = "/saved-chords/";
 const progressionsUrl = "/progressions/";
@@ -14,16 +14,16 @@ export const chordApi = {
     return response.data;
   },
 
-  saveChord: async (chordId: number) => {
-    const response = await api.post(savedChordsUrl, { id: chordId });
+  saveChord: async (input: ApiCreateSavedChordRequest): Promise<ApiSavedChordResponse> => {
+    const response = await api.post<ApiSavedChordResponse>(savedChordsUrl, input);
     return response.data;
   },
 
   // Progressions
 
   // Get all progressions for the current user
-  getProgressions: async () => {
-    const response = await api.get(progressionsUrl);
+  getProgressions: async (): Promise<ApiProgressionResponse[]> => {
+    const response = await api.get<ApiProgressionResponse[]>(progressionsUrl);
     return response.data;
   },
 

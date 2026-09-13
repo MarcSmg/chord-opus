@@ -4,9 +4,11 @@ import { isQualityAlias, QUALITY_ALIASES, QUALITY_PATTERNS } from "./chordQualit
 import { isNote, NOTE_MAP } from "./notemap";
 import { PitchClass } from "../../domain/harmony/PitchClass";
 
+export const ROOT_TOKEN_PATTERN = /^([A-Ga-g](?:#|b)?)(.*)$/;
+
 function parseChordSymbol(raw: string) {
 
-    const match = raw.match(/^([A-Ga-g](?:#|b)?)(.*)$/); // returns the root note and the rest
+    const match = raw.match(ROOT_TOKEN_PATTERN); // returns the root note and the rest
 
     if (!match) {
         throw new Error(`Invalid chord symbol: ${raw}`);

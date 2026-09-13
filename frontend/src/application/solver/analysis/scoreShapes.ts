@@ -21,7 +21,7 @@ export function scoreShapes(shapes: Shape[], chord: Chord, fretboard: Fretboard)
                 - fingerSpread(s) * 0.2;
                 - duplicatesCount * 0.2
                 + s.openStringsCount() * 0.5
-                + s.cagedSimilarity() * 3;
+                + s.cagedSimilarity() * 3.5;
                 + barrePotential(s) * 0.5;
 
             if (hasIsolatedNote(s)) s.score -= 2;

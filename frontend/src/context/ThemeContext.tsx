@@ -1,8 +1,10 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
+
+export type Theme = "light" | "dark" | "system";
 
 interface ThemeProviderType {
-    theme: string,
-    toggleTheme: () => void
+    theme: Theme;
+    setTheme: Dispatch<SetStateAction<Theme>>;
 }
 
 export const ThemeContext = createContext<ThemeProviderType | undefined>(undefined);

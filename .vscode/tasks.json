@@ -1,3 +1,31 @@
 {
-    
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Auto Launch Frontend Dev Server",
+            "type": "shell",
+            "command": "cd frontend && npm run dev",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "dev-servers"
+            }
+        },
+        {
+            "label": "Auto Launch Backend Dev Server",
+            "type": "shell",
+            "command": "cd backend && source .venv/bin/activate && python manage.py runserver",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "dev-servers"
+            }
+        }
+    ]
 }

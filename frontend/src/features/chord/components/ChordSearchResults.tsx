@@ -3,7 +3,6 @@ import type { RenderedDiagram as ChordDiagramLayout } from "../../../rendering/b
 import { ChordDiagram } from "./ChordDiagram"
 import { ChordMenu } from "./ChordMenu"
 import { ChordWrapper } from "./ChordWrapper"
-import { useSidebar } from "@/context/SidebarContext"
 import { cn } from "@/shared/utils/cn"
 
 interface SearchResultsProps extends React.ComponentPropsWithoutRef<"div"> {

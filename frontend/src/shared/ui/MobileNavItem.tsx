@@ -1,5 +1,4 @@
 import type { ComponentPropsWithRef, ReactNode } from "react";
-import type { MenuItem } from "../types/navigation";
 import { useSidebar } from "@/context/SidebarContext";
 import { Tooltip } from "./Tooltip";
 import { NavLink } from "react-router-dom";

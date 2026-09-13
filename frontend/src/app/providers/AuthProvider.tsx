@@ -4,6 +4,7 @@ import {
     authApi
 
 } from "@/api/auth";
+import { setUnauthorizedHandler } from "@/api/client";
 type AuthProviderProps = {
     children: React.ReactNode;
 }
@@ -20,6 +21,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     function logout() {
         setUser(null);
     }
+
+    useEffect(() => {
+        // Just clear the session state here — RequireAuth reacts to
+        // isAuthenticated turning false and redirects declaratively.
+        // (A window.location redirect here would force a full reload,
+        // remounting AuthProvider and re-running this effect — looping.)
+        setUnauthorizedHandler(logout);
+
+        return () => setUnauthorizedHandler(null);
+    }, []);
 
     useEffect(() => {
         async function init() {

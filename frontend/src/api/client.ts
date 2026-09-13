@@ -17,6 +17,15 @@ export function setAccessToken(token: string | null) {
   console.log("access: " + accessToken)
 }
 
+type UnauthorizedHandler = () => void;
+let onUnauthorized: UnauthorizedHandler | null = null;
+
+// Lets the AuthProvider (which owns the user/session React state) react
+// when a refresh fails here, since this module sits outside React.
+export function setUnauthorizedHandler(handler: UnauthorizedHandler | null) {
+  onUnauthorized = handler;
+}
+
 api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -63,6 +72,11 @@ api.interceptors.response.use(
       refreshTokenPromise = api.post("/auth/refresh/")
         .then((response) => {
           setAccessToken(response.data.access);
+        })
+        .catch((e) => {
+          setAccessToken(null);
+          onUnauthorized?.();
+          throw e;
         })
         .finally(() => {
           isRefreshing = false;

@@ -11,7 +11,7 @@ function generateSVG(input: string, fretboard: Fretboard): RenderedDiagram[] {
 
     const diagrams = shapes.map(shape => {
       const diagram = shapeToDiagram(shape);
-      return buildDiagramLayout(diagram, input);
+      return { ...buildDiagramLayout(diagram, input), voicing: shape.getFrets() };
     });
 
     // console.log(diagrams)

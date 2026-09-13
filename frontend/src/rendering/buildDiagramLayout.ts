@@ -22,7 +22,8 @@ export type RenderedDiagram = {
     mutedStrings: DotData[],
     baseFret?: number,
     constraints: Constraints,
-    label?: string
+    label?: string,
+    voicing?: readonly (number | null)[]
 }
 
 export type StringData = {x: number};

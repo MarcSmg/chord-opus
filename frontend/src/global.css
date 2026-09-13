@@ -59,22 +59,25 @@
     --text-disabled: #94a3b8;      /* derived: not specified in guide */
 
     --primary-bold: #0d9488;       /* Buttons > Button Primary (distinct from Brand Primary) */
-    --primary-soft: rgba(13, 148, 136, 0.14);   /* derived tint */
+    /* -soft tokens below are solid, not rgba: each is the original tint
+       pre-composited over --bg-main, so stacking them never double-blends
+       into a different color depending on what's underneath. */
+    --primary-soft: #d9ebe6;       /* was rgba(13, 148, 136, 0.14) over --bg-main */
 
     --accent-secondary: #1c6da3;   /* Buttons > Button Secondary (distinct from Brand Secondary) */
-    --accent-secondary-soft: rgba(28, 109, 163, 0.1);   /* derived tint, for hover/pressed states */
+    --accent-secondary-soft: #e4ebed;   /* was rgba(28, 109, 163, 0.1) over --bg-main, for hover/pressed states */
 
     --success-bold: #15a34a;       /* Semantic > Success */
-    --success-soft: rgba(21, 163, 74, 0.12);    /* derived tint */
+    --success-soft: #dfefe0;       /* was rgba(21, 163, 74, 0.12) over --bg-main */
 
     --error-bold: #dc2626;         /* Semantic > Error */
-    --error-soft: rgba(220, 38, 38, 0.12);      /* derived tint */
+    --error-soft: #f6e0dc;         /* was rgba(220, 38, 38, 0.12) over --bg-main */
 
     --info-bold: #2663eb;          /* Semantic > Info */
-    --info-soft: rgba(38, 99, 235, 0.12);       /* derived tint */
+    --info-soft: #e1e7f4;          /* was rgba(38, 99, 235, 0.12) over --bg-main */
 
     --warning-bold: #d97707;       /* Semantic > Warning */
-    --warning-soft: rgba(217, 119, 7, 0.12);    /* derived tint */
+    --warning-soft: #f6e9d8;       /* was rgba(217, 119, 7, 0.12) over --bg-main */
 
     --shadow-sm: 0 1px 2px 0 rgba(31, 42, 56, 0.06);
     --shadow-md: 0 4px 6px -1px rgba(31, 42, 56, 0.1);
@@ -95,7 +98,7 @@
     --bg-surface: #1e232b;
     --bg-elevated: #262c36;        /* derived: not specified in guide */
 
-    --border-subtle: #262c36;      /* derived: not specified in guide */
+    --border-subtle: #3f4652;      /* derived: not specified in guide */
     --border-strong: var(--accent-secondary);
 
     --text-main: #f2f3f5;          /* Text Primary */
@@ -103,22 +106,25 @@
     --text-disabled: #545b66;      /* derived: not specified in guide */
 
     --primary-bold: #14b8a6;       /* Buttons > Button Primary (matches Brand Primary in dark theme) */
-    --primary-soft: rgba(20, 184, 166, 0.15);   /* derived tint */
+    /* -soft tokens below are solid, not rgba: each is the original tint
+       pre-composited over --bg-main, so stacking them never double-blends
+       into a different color depending on what's underneath. */
+    --primary-soft: #183335;       /* was rgba(20, 184, 166, 0.15) over --bg-main */
 
     --accent-secondary: #5fa4fa;   /* Buttons > Button Secondary (distinct from Brand Secondary) */
-    --accent-secondary-soft: rgba(95, 164, 250, 0.15);   /* derived tint, for hover/pressed states */
+    --accent-secondary-soft: #243042;   /* was rgba(95, 164, 250, 0.15) over --bg-main, for hover/pressed states */
 
     --success-bold: #21c45d;       /* Semantic > Success */
-    --success-soft: rgba(33, 196, 93, 0.15);    /* derived tint */
+    --success-soft: #1a352a;       /* was rgba(33, 196, 93, 0.15) over --bg-main */
 
     --error-bold: #f04343;         /* Semantic > Error */
-    --error-soft: rgba(240, 67, 67, 0.15);      /* derived tint */
+    --error-soft: #392226;         /* was rgba(240, 67, 67, 0.15) over --bg-main */
 
     --info-bold: #3b81f5;          /* Semantic > Info */
-    --info-soft: rgba(59, 129, 245, 0.15);      /* derived tint */
+    --info-soft: #1e2b41;          /* was rgba(59, 129, 245, 0.15) over --bg-main */
 
     --warning-bold: #f59d0a;       /* Semantic > Warning */
-    --warning-soft: rgba(245, 157, 10, 0.15);   /* derived tint */
+    --warning-soft: #3a2f1e;       /* was rgba(245, 157, 10, 0.15) over --bg-main */
 
     --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     --shadow-md: 0 12px 24px -6px rgba(0, 0, 0, 0.6);

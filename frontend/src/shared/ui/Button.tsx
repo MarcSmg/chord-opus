@@ -1,54 +1,44 @@
-import type { ComponentPropsWithRef, ReactNode } from "react"
-import { motion, type Transition } from "motion/react"
+import type { MouseEventHandler, ReactNode } from "react"
+import { cn } from "@/shared/utils/cn"
 
-interface ButtonProps extends ComponentPropsWithRef<"button"> {
+interface ButtonProps {
     variant?: "primary" | "secondary";
     type?: "submit";
     icon?: ReactNode;
+    children?: ReactNode;
+    className?: string;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    disabled?: boolean;
 }
 
 export const Button = ({
     variant,
     children,
     className,
-    icon
+    icon,
+    type,
+    onClick,
+    disabled,
 }: ButtonProps) => {
 
-    const baseStyles = `flex justify-center gap-2 rounded-full p-3 font-semibold hover:scale-100`;
-    const primaryStyles = `
-        bg-gradient-to-r from-primary to-accent-bold text-white shadow-detail-md
-    `
-    const secondaryStyles = `
-        bg-ui-card text-accent-secondary border-2 border-accent-secondary hover:bg-accent-secondary-soft
-    `;
-
-    const transition: Transition = {
-        type: "tween",
-        stiffness: 400,
-        duration: 0.3,
-        delay: (variant === "primary") ? 0.1 : 0,
-        ease: [0, 0.71, 0.2, 1.01],
-    }
+    const baseStyles = "flex items-center justify-center gap-2 rounded-2xl px-2 py-1 cursor-pointer text-button-label font-medium disabled:cursor-not-allowed disabled:bg-ui-elevated disabled:text-content-disabled transition-all";
+    const primaryStyles = "px-4 py-2 bg-accent-bold border-2 border-accent-bold text-white";
+    const secondaryStyles = "px-4 py-2 bg-ui-card text-accent-secondary border-2 border-accent-secondary hover:bg-accent-secondary-soft";
 
     return (
-        <motion.button
-            initial={{
-                // boxShadow: "0px 5px 15px rgba(0,0,0,0.2)"
-            }}
-            whileHover={{
-                y: -2,
-                boxShadow: "0px 10px 20px rgba(0,0,0,0.2)"
-            }}
-            transition={transition}
-            className={`
-            ${className}
-            ${baseStyles}
-            ${variant === "primary" && primaryStyles}
-            ${variant === "secondary" && secondaryStyles}
-            `}
+        <button
+            type={type}
+            onClick={onClick}
+            disabled={disabled}
+            className={cn(
+                baseStyles,
+                variant === "primary" && primaryStyles,
+                variant === "secondary" && secondaryStyles,
+                className
+            )}
         >
-            {icon && <span>{icon}</span> }
+            {icon && <span>{icon}</span>}
             {children}
-        </motion.button>
+        </button>
     )
 }

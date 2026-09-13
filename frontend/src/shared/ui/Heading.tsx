@@ -1,4 +1,5 @@
 import type { ComponentPropsWithRef, ElementType, ReactNode } from 'react';
+import { cn } from '@/shared/utils/cn';
 
 interface HeadingProps extends ComponentPropsWithRef<"h1"> {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
@@ -7,20 +8,20 @@ interface HeadingProps extends ComponentPropsWithRef<"h1"> {
 }
 
 const Heading = ({ level = 1, children, className = "" }: HeadingProps) => {
-  const baseStyles = "text-content font-bold tracking-tight";
-  
+  const baseStyles = "font-bold tracking-tight";
+
   const levels: Record<number, string> = {
-    1: "text-3xl md:text-4xl mb-6",
-    2: "text-2xl md:text-3xl mb-4",
-    3: "text-xl mb-2",
-    4: "text-lg mb-1",
+    1: "text-header-1 md:text-4xl text-content",
+    2: "text-header-2 md:text-3xl text-content",
+    3: "text-header-3 text-content",
+    4: "text-header-4 text-content",
   };
 
   // Define the tag dynamically as an ElementType
   const Tag = `h${level}` as ElementType;
 
   return (
-    <Tag className={`${baseStyles} ${levels[level]} ${className}`}>
+    <Tag className={cn(baseStyles, levels[level], className)}>
       {children}
     </Tag>
   );

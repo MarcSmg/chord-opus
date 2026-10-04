@@ -21,13 +21,13 @@ const Sidebar = ({ menuItems }: { menuItems: MenuItem[] }) => {
         initial={{ width: "auto" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="relative h-full py-5 border border-stroke-subtle rounded-2xl overflow-hidden flex flex-col"
-        style={{
-          boxShadow: "rgba(0, 1, 0, 0.1) 0px 8px 24px"
-        }}
+        // style={{
+        //   boxShadow: "rgba(0, 1, 0, 0.1) 0px 8px 24px"
+        // }}
       >
         <div className="flex justify-end px-2 mb-10 mt-2">
           <div
-            className="size-11 rounded-xl cursor-pointer flex items-center justify-center //hover:bg-accent-soft/40 transition-colors duration-200"
+            className="size-11 rounded-xl cursor-pointer flex items-center justify-center //hover:bg-accent-secondary-soft/40 transition-colors duration-200"
             onClick={toggleMenu}
           >
             {isExtended ? <SidebarCollapse className="text-content-muted" width={18} height={18} strokeWidth={2} /> : <SidebarExpand className="text-content-muted" width={18} height={18} strokeWidth={2} />}

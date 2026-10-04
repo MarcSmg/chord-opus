@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react"
 import type { ComponentPropsWithRef, ReactNode } from "react"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import { NavLink, useLocation } from "react-router-dom"
 import { NavArrowDown, NavArrowRight } from "iconoir-react"
@@ -52,12 +52,22 @@ const ChildLink = ({ to, label }: MenuItem) => (
   </NavLink>
 )
 
-const NestedNavItem = ({ label, icon, children = [] }: NavItemProps) => {
+const NestedNavItem = ({ label, icon, activeIcon, children = [] }: NavItemProps) => {
   const location = useLocation();
   const hasActiveChild = children.some((child) => location.pathname.startsWith(child.to));
 
   const [isOpen, setIsOpen] = useState(hasActiveChild);
+  const isHighlighted = isOpen || hasActiveChild;
   const { ref, isHovered, position, handleMouseEnter, handleMouseLeave } = useHoverFlyout<HTMLDivElement>();
+
+  // `isOpen` is otherwise just manual toggle state, so it doesn't know when
+  // navigation has moved us off this section entirely (e.g. clicking a
+  // different top-level item) — resync it to the route on every navigation
+  // without clobbering a manual toggle in between.
+  useEffect(() => {
+    setIsOpen(hasActiveChild);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   const {isSidebarExtended} = useSidebar();
 
@@ -72,11 +82,11 @@ const NestedNavItem = ({ label, icon, children = [] }: NavItemProps) => {
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          "flex w-full items-center rounded-xl px-3 py-2 hover:bg-accent-soft/40 transition-colors duration-200",
-          isOpen || hasActiveChild ? "text-content" : "text-content-muted"
+          "flex w-full items-center rounded-xl px-3 py-2 transition-colors duration-200",
+          isHighlighted ? "text-content bg-accent-secondary-soft" : "text-content-muted hover:bg-accent-secondary-soft/40"
         )}
       >
-        <span className="shrink-0">{icon}</span>
+        <span className={cn("shrink-0", isHighlighted && "text-accent-secondary")}>{isHighlighted ? activeIcon ?? icon : icon}</span>
         <AnimatePresence>
           {isSidebarExtended && (
             <motion.span
@@ -92,8 +102,8 @@ const NestedNavItem = ({ label, icon, children = [] }: NavItemProps) => {
           )}
         </AnimatePresence>
         {isSidebarExtended && (
-          <NavArrowDown
-            className={cn("ml-auto shrink-0 transition-transform duration-200", isOpen && "rotate-180")}
+          <NavArrowRight
+            className={cn("ml-auto shrink-0 transition-transform duration-200", isOpen && "rotate-90")}
             width={14}
             height={14}
             strokeWidth={2}
@@ -129,7 +139,7 @@ const NestedNavItem = ({ label, icon, children = [] }: NavItemProps) => {
                 initial={{ opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -4 }}
-                transition={{ duration: 0.15 }}
+                transition={{ duration: 0.15, delay: 0.2 }}
                 style={{ top: position.top, left: position.left }}
                 className="fixed z-50 flex flex-col gap-2"
               >
@@ -160,6 +170,7 @@ export const NavItem = ({ to, label, activeIcon, icon, className, children }: Na
         to={to}
         label={label}
         icon={icon}
+        activeIcon={activeIcon}
         children={children}
       />
     )
@@ -172,11 +183,11 @@ export const NavItem = ({ to, label, activeIcon, icon, className, children }: Na
         className={({ isActive }) => cn(
           "flex items-center rounded-xl px-3 py-2",
           className,
-          isActive ? "md:text-content md:bg-accent-soft" : "hover:bg-accent-soft/40 transition-colors duration-200"
+          isActive ? "md:text-content md:bg-accent-secondary-soft" : "hover:bg-accent-secondary-soft/40 transition-colors duration-200"
         )}
       >
         {({ isActive }) => (<>
-          <span key="icon" className={cn("shrink-0", isActive ? "text-primary" : "text-content-muted")}>
+          <span key="icon" className={cn("shrink-0", isActive ? "text-accent-secondary" : "text-content-muted")}>
             {isActive ? activeIcon : icon}
           </span>
           <AnimatePresence>

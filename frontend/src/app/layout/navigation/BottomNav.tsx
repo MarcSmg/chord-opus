@@ -49,7 +49,7 @@ const ExpandableTab = ({ item, isOpen, onToggle }: { item: MenuItem; isOpen: boo
             onClick={onToggle}
             className={cn(
                 "relative isolate flex h-9 shrink-0 items-center justify-center overflow-hidden rounded-2xl px-2",
-                isOpen && "pl-2.5 pr-4",
+                isHighlighted && "pl-2.5 pr-4",
                 isHighlighted ? "text-primary" : "text-content-muted hover:text-content"
             )}
         >
@@ -64,12 +64,12 @@ const ExpandableTab = ({ item, isOpen, onToggle }: { item: MenuItem; isOpen: boo
             <motion.span
                 initial={false}
                 animate={{
-                    width: isOpen ? "auto" : 0,
-                    opacity: isOpen ? 1 : 0,
-                    marginLeft: isOpen ? 8 : 0,
-                    filter: !reduce && isOpen ? "blur(0px)" : !reduce ? "blur(3px)" : undefined,
+                    width: isHighlighted ? "auto" : 0,
+                    opacity: isHighlighted ? 1 : 0,
+                    marginLeft: isHighlighted ? 8 : 0,
+                    filter: !reduce && isHighlighted ? "blur(0px)" : !reduce ? "blur(3px)" : undefined,
                 }}
-                transition={reduce ? { duration: 0 } : isOpen ? LABEL_OPEN : LABEL_CLOSE}
+                transition={reduce ? { duration: 0 } : isHighlighted ? LABEL_OPEN : LABEL_CLOSE}
                 className="inline-block overflow-hidden whitespace-nowrap font-heading font-medium text-nav"
             >
                 {item.label}
@@ -108,7 +108,7 @@ export const BottomNav = ({ menuItems }: { menuItems: MenuItem[] }) => {
                 ref={rootRef}
                 layout
                 transition={reduce ? { duration: 0 } : SHELL_SPRING}
-                className="relative m-5 mb-5 overflow-hidden rounded-full border border-stroke-subtle/60 bg-ui-surface/60 backdrop-blur-sm"
+                className="relative m-5 mb-5 overflow-hidden rounded-2xl border border-stroke-subtle/60 bg-ui-surface/60 backdrop-blur-sm"
             >
                 <AnimatePresence mode="popLayout" initial={false}>
                     {active && (

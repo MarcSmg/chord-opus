@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
-import { HomeAltSlimHoriz, Compass, BookmarkCircle, AlbumCarousel } from 'iconoir-react';
+import { HomeAltSlimHoriz, Compass, BookmarkCircle } from 'iconoir-react';
 import { ThemeProvider } from "../providers/ThemeProvider"
 import Sidebar from './navigation/Sidebar'
 import { Outlet } from 'react-router-dom'
@@ -11,17 +11,21 @@ import { SavedChordsProvider } from '../providers/SavedChordsProvider';
 import { MobileProvider } from '../providers/MobileProvider';
 import { DeviceProvider } from '../providers/DeviceProvider';
 
+const libraryChildren = [
+  { to: "/library", label: "Saved Chords" },
+  { to: "/progressions", label: "Progressions" },
+];
+
 const desktopSidebarItems = [
   { to: "/home", label: "Home", icon: <HomeAltSlimHoriz strokeWidth={2} width={20} height={20} />, activeIcon: <HomeAltSlimHoriz strokeWidth={2.5} width={20} height={20} /> },
-  { to: "/search", label: "Explore Chords", icon: <Compass strokeWidth={2} width={20} height={20} />, activeIcon: <Compass strokeWidth={2.5} width={20} height={20} /> },
-  { to: "/saved-chords", label: "Saved Chords", icon: <BookmarkCircle strokeWidth={2} width={20} height={20} />, activeIcon: <BookmarkCircle strokeWidth={2.5} width={20} height={20} /> },
-  { to: "/progressions", label: "Progressions", icon: <AlbumCarousel strokeWidth={2} width={20} height={20} />, activeIcon: <AlbumCarousel strokeWidth={2.5} width={20} height={20} /> },
+  { to: "/explore", label: "Explore", icon: <Compass strokeWidth={2} width={20} height={20} />, activeIcon: <Compass strokeWidth={2.5} width={20} height={20} /> },
+  { to: "/library", label: "Library", icon: <BookmarkCircle strokeWidth={2} width={20} height={20} />, activeIcon: <BookmarkCircle strokeWidth={2.5} width={20} height={20} />, children: libraryChildren },
 ];
 
 const mobileNavbarItems = [
   { to: "/home", label: "Home", icon: <HomeAltSlimHoriz strokeWidth={2} width={20} height={20} />, activeIcon: <HomeAltSlimHoriz strokeWidth={2.5} width={20} height={20} /> },
-  { to: "/search", label: "Chords", icon: <Compass strokeWidth={2} width={20} height={20} />, activeIcon: <Compass strokeWidth={2.5} width={20} height={20} /> },
-  { to: "/saved-chords", label: "Saved Chords", icon: <BookmarkCircle strokeWidth={2} width={20} height={20} />, activeIcon: <BookmarkCircle strokeWidth={2.5} width={20} height={20} /> },
+  { to: "/explore", label: "Explore", icon: <Compass strokeWidth={2} width={20} height={20} />, activeIcon: <Compass strokeWidth={2.5} width={20} height={20} /> },
+  { to: "/library", label: "Library", icon: <BookmarkCircle strokeWidth={2} width={20} height={20} />, activeIcon: <BookmarkCircle strokeWidth={2.5} width={20} height={20} />, children: libraryChildren },
 ];
 
 export const AppLayout = () => {

@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppLayout } from "../layout/AppLayout";
-import { ChordSearchPage } from "../../features/chord/pages/ChordSearchPage";
-import { SavedChordsPage } from "../../features/chord/pages/SavedChordsPage";
+import { ExplorePage } from "../../features/chord/pages/ExplorePage";
+import { LibraryPage } from "../../features/chord/pages/SavedChordsPage";
 import { AuthPage } from "../../features/auth/pages/AuthPage";
-import { ProfilePage } from "../../features/user/pages/ProfilePage";
+import { AccountPage } from "../../features/user/pages/AccountPage";
 import { HomePage } from "../../features/chord/pages/HomePage";
 // import { LandingPage } from "../../pages/landing/LandingPage";
 import { AuthLayout } from "../layout/AuthLayout";
@@ -43,10 +43,10 @@ export const router = createBrowserRouter([
                         element: <AppLayout />,
                         children: [
                             { path: "/home", element: <HomePage /> },
-                            { path: "/search", element: <ChordSearchPage/>},
-                            { path: "/saved-chords", element: <SavedChordsPage /> },
+                            { path: "/explore", element: <ExplorePage/>},
+                            { path: "/library", element: <LibraryPage /> },
                             { path: "/progressions", element: <ProgressionsPage /> },
-                            { path: "/profile", element: <ProfilePage /> }
+                            { path: "/profile", element: <AccountPage /> }
                         ],
                     },
                 ],

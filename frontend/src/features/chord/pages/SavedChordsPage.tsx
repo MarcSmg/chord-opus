@@ -6,7 +6,7 @@ import { SavedChordCard } from "../components/SavedChordCard";
 import { Search } from "iconoir-react";
 import { Input } from "@/shared/ui/Input";
 
-export const SavedChordsPage = () => {
+export const LibraryPage = () => {
   const [savedChords, setSavedChords] = useState<ApiSavedChordResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +50,7 @@ export const SavedChordsPage = () => {
 
   return (
     <section className="min-h-full px-5 py-6 pb-24 md:px-10 md:pb-10">
-      <Heading className="mb-4">Saved Chords</Heading>
+      <Heading className="mb-4 text-center">Saved Chords</Heading>
 
       <div className="relative mb-8">
         <Input

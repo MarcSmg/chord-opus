@@ -1,4 +1,4 @@
-import type { ApiLoginRequest, ApiLoginResponse, ApiRefreshResponse, ApiRegisterRequest, ApiRegisterResponse, ApiUser } from "@/types/api";
+import type { ApiLoginRequest, ApiLoginResponse, ApiRefreshResponse, ApiRegisterRequest, ApiRegisterResponse, ApiUpdateProfileRequest, ApiUser, ApiUserProfile } from "@/types/api";
 import { api, setAccessToken } from "./client";
 
 const authBaseUrl = "/auth"
@@ -7,6 +7,7 @@ const loginUrl = `${authBaseUrl}/login/`
 const meUrl = `${authBaseUrl}/me/`
 const refreshUrl = `${authBaseUrl}/refresh/`
 const logoutUrl = `${authBaseUrl}/logout/`
+const profileUrl = "/profile/"
 
 export const authApi = {
     register: async (input: ApiRegisterRequest): Promise<ApiRegisterResponse> => {
@@ -37,7 +38,8 @@ export const authApi = {
         return response.data
     },
 
-    preferences: async () => {
-
+    preferences: async (input: ApiUpdateProfileRequest): Promise<ApiUserProfile> => {
+        const response = await api.patch<ApiUserProfile>(profileUrl, input);
+        return response.data;
     }
 }

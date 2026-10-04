@@ -16,7 +16,7 @@ type AuthPageProps = {
   initialMode: "login" | "signup";
 }
 
-export const AuthPage = ({initialMode}: AuthPageProps) => {
+export const AuthPage = ({ initialMode }: AuthPageProps) => {
 
   const navigate = useNavigate();
 
@@ -27,25 +27,22 @@ export const AuthPage = ({initialMode}: AuthPageProps) => {
   }
 
   return (
-    <div className=" relative flex justify-center items-center min-h-screen w-full bg-linear-to-t from-primary from-80% to-accent-bold md:bg-linear-to-t md:from-white md:to-white md:h-auto md:px-[15%] lg:px-[20%]">
-      <Heading className=" absolute top-30 w-full text-white text-center md:hidden" >ChordOpus</Heading>
+    <div className=" relative flex justify-center items-center min-h-screen w-full bg-primary md:bg-ui-bg md:h-auto md:px-4">
       <div
-        className="fixed w-full -mb-1 bg-ui-card bottom-0 left-0 right-0 min-h-[60vh] border border-stroke-subtle rounded-t-3xl shadow-detail-md overflow-hidden md:relative md:h-fit"
+        className="fixed w-full -mb-1 bg-ui-card bottom-0 left-0 right-0 min-h-[60vh] border border-stroke-subtle rounded-t-4xl shadow-detail-md overflow-hidden md:relative md:h-fit md:w-full md:rounded-4xl md:max-w-6xl"
       >
         <div
-          className="flex flex-col justify-center p-8 h-full"
+          className="relative flex flex-col items-center gap-5 p-8 pt-10 h-full"
         >
-          
           <SlidingTabs
             tabs={AUTH_TABS}
             activeTabId={initialMode}
             onActiveTabChange={handleTabChange}
-            className="w-full md:w-150"
+            className="w-full md:absolute md:top-8 md:left-1/2 md:w-150 transition-all"
           />
-
           <AuthShell activeKey={initialMode}>
             {initialMode === 'login' ? <LoginForm /> : <SignupForm />}
-          </AuthShell>        
+          </AuthShell>
         </div>
       </div>
     </div>

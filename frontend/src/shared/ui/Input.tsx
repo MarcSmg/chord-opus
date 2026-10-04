@@ -5,7 +5,7 @@ import { cn } from "@/shared/utils/cn"
 
 interface InputProps extends ComponentPropsWithRef<"input"> {
     icon?: ReactNode;
-    value: string;
+    value?: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onClear?: () => void;
     shortcut?: boolean;

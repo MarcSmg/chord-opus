@@ -7,7 +7,7 @@ interface AuthShellProps {
 }
 
 export const AuthShell = ({ children, activeKey }: AuthShellProps) => (
-  <div>
+  <div className="w-full">
     <motion.div animate={{ height: 'auto' }}>
         <AnimatePresence mode="wait" initial={false}>
         <motion.div

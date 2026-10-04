@@ -1,21 +1,17 @@
-import { Mail, Lock } from "iconoir-react"
-import { Input } from "../../../shared/ui/Input"
+import { Mail, Key } from "iconoir-react"
 import { Checkbox } from "../../../shared/ui/Checkbox"
 import { Button } from "../../../shared/ui/Button"
-import GoogleIcon from "../../../assets/google-icon.svg"
 import { useNavigate } from "react-router-dom"
-import Illustration from "@/assets/illust2.svg"
-import { useState } from "react"
+import Illustration from "@/assets/signup-illustration.jpg"
+import { useId, useState } from "react"
 import { authApi } from "@/api/auth"
-import { cn } from "@/shared/utils/cn"
-
+import { AuthDivider, AuthField, authIconStyles, GoogleButton } from "../components/AuthField"
+import Heading from "@/shared/ui/Heading"
 
 export const SignupForm = () => {
 
   const navigate = useNavigate();
-
-  const inputStyles = "px-5 py-3 w-full border-2 border-stroke-subtle rounded-xl outline-primary/50 outline-0 focus:outline-3 transition-all duration-100";
-  const iconStyles = "absolute left-4 text-stroke-strong";
+  const id = useId();
 
   const [formInput, setFormInput] = useState({
     firstName: "",
@@ -23,6 +19,7 @@ export const SignupForm = () => {
     username: "",
     password: "",
     confirmPassword: "",
+    remember: false,
   });
 
   const [message, setMessage] = useState("");
@@ -49,67 +46,79 @@ export const SignupForm = () => {
   }
 
   return (
-    <div className='md:grid md:grid-cols-2 gap-x-10 items-center'>
-      <img className='hidden md:block' src={Illustration} />
+    <div className='w-full md:grid md:grid-cols-2 md:pt-5 gap-x-10 items-center'>
+      <div className='hidden md:block h-full'>
+        <img className='w-full h-full rounded-4xl object-cover' src={Illustration} />
+      </div>
 
-      <form onSubmit={handleSignUp} action="" className="relative flex flex-col gap-5 w-full pb-5 my-5">
-        {message}
+      <form onSubmit={handleSignUp} className="relative flex flex-col gap-4 w-full pb-5 my-5">
+        <Heading level={2}>Create an account</Heading>
+        {message && (
+          <p className="rounded-xl bg-status-error-soft p-3 text-body-sm text-status-error">{message}</p>
+        )}
 
-        <div className="flex flex-col gap-3">
-          <Input
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <AuthField
+            id={`${id}-first-name`}
+            label="First Name"
             type="text"
             placeholder="First Name"
-            className={inputStyles}
             value={formInput.firstName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormInput(prv => ({ ...prv, firstName: e.target.value }))}
           />
-          <Input
+          <AuthField
+            id={`${id}-last-name`}
+            label="Last Name"
             type="text"
             placeholder="Last Name"
-            className={inputStyles}
             value={formInput.lastName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormInput(prv => ({ ...prv, lastName: e.target.value }))}
           />
         </div>
-        <Input
+
+        <AuthField
+          id={`${id}-username`}
+          label="Username"
           type="text"
           placeholder="Username"
-          className={cn(inputStyles, "pl-11")}
-          icon={<Mail className={iconStyles} strokeWidth={2} />}
+          icon={<Mail className={authIconStyles} strokeWidth={2} />}
           value={formInput.username}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormInput(prv => ({ ...prv, username: e.target.value }))}
         />
 
-        <Input
+        <AuthField
+          id={`${id}-password`}
+          label="Password"
           type="password"
           placeholder="Enter your password"
-          className={cn(inputStyles, "pl-11")}
-          icon={<Lock className={iconStyles} strokeWidth={2} />}
+          icon={<Key className={authIconStyles} strokeWidth={2} />}
           value={formInput.password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormInput(prv => ({ ...prv, password: e.target.value }))}
         />
-        <Input
+        <AuthField
+          id={`${id}-confirm-password`}
+          label="Confirm password"
           type="password"
           placeholder="Confirm your password"
-          className={cn(inputStyles, "pl-11")}
-          icon={<Lock className={iconStyles} strokeWidth={2} />}
+          icon={<Key className={authIconStyles} strokeWidth={2} />}
           value={formInput.confirmPassword}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormInput(prv => ({ ...prv, confirmPassword: e.target.value }))}
         />
 
-        <div className='flex gap-3'>
-          <Checkbox value='remember' />
+        <label htmlFor={`${id}-remember`} className='flex items-center gap-2 text-body-sm text-content-muted cursor-pointer'>
+          <Checkbox
+            id={`${id}-remember`}
+            checked={formInput.remember}
+            onChange={(e) => setFormInput(prv => ({ ...prv, remember: e.target.checked }))}
+          />
           Remember me
-        </div>
+        </label>
 
-        <Button variant="primary" type="submit" >Sign Up</Button>
-        <div className='relative flex justify-center items-center w-full h-[0.08rem] my-2 bg-gray-300'>
-          <p className='absolute px-2 bg-ui-card'>Or sign up with</p>
-        </div>
-        <div className='w-full'>
-          <Button icon={<img className='size-6' src={GoogleIcon} />} className='w-full border border-stroke-strong/50'>Google</Button>
-        </div>
+        <Button variant="primary" type="submit">Create Account</Button>
 
+        <AuthDivider label="Or sign up with" />
+
+        <GoogleButton />
       </form>
 
     </div>

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
 import { Button } from "./Button";
 import { ShortcutHint, type Shortcut } from "./ShortcutHint";
 import { cn } from "@/shared/utils/cn";
+import Heading from "./Heading";
+import { Popover, PopoverContent, PopoverHeader, PopoverTrigger } from "./Popover";
 
 export interface Hint {
     label: string;
@@ -18,25 +19,6 @@ interface HintsPopoverProps {
 // Meant to be dropped into any section header with that section's own hint list.
 export const HintsPopover = ({ hints, className }: HintsPopoverProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    const rootRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!isOpen) return;
-
-        const handlePointer = (e: PointerEvent) => {
-            if (!rootRef.current?.contains(e.target as Node)) setIsOpen(false);
-        };
-        const handleKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") setIsOpen(false);
-        };
-
-        document.addEventListener("pointerdown", handlePointer);
-        document.addEventListener("keydown", handleKey);
-        return () => {
-            document.removeEventListener("pointerdown", handlePointer);
-            document.removeEventListener("keydown", handleKey);
-        };
-    }, [isOpen]);
 
     useEffect(() => {
         const handleShortcut = (e: KeyboardEvent) => {
@@ -54,37 +36,27 @@ export const HintsPopover = ({ hints, className }: HintsPopoverProps) => {
     }, []);
 
     return (
-        <div ref={rootRef} className={cn("", className)}>
-            <Button
-                onClick={() => setIsOpen((prev) => !prev)}
-                className="rounded-lg border border-stroke-subtle bg-accent-secondary-soft"
-            >
-                Hints
-                <ShortcutHint shortcuts={["shift+h"]} />
-            </Button>
+        <Popover open={isOpen} onOpenChange={setIsOpen} className={className}>
+            <PopoverTrigger>
+                <Button className="rounded-lg bg-accent-secondary-soft">
+                    Hints
+                    <ShortcutHint shortcuts={["shift+h"]} />
+                </Button>
+            </PopoverTrigger>
 
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        role="dialog"
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.85 }}
-                        transition={{ type: "spring", stiffness: 700, damping: 30 }}
-                        style={{ transformOrigin: "top right" }}
-                        className="absolute right-0 top-full z-20 mt-2 w-max min-w-56 overflow-hidden rounded-2xl border-2 border-stroke-strong/60 bg-ui-card/50 p-2 shadow-md backdrop-blur-lg"
-                    >
-                        <ul className="flex flex-col gap-1">
-                            {hints.map((hint) => (
-                                <li key={hint.label} className="flex items-center justify-between gap-6 px-3 py-1.5">
-                                    <span className="text-label text-content">{hint.label}</span>
-                                    <ShortcutHint shortcuts={hint.shortcuts} />
-                                </li>
-                            ))}
-                        </ul>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
+            <PopoverContent className="w-max min-w-56 p-2">
+                <PopoverHeader>
+                    <Heading level={5} className="mb-0">Hints</Heading>
+                </PopoverHeader>
+                <ul className="flex flex-col gap-1">
+                    {hints.map((hint) => (
+                        <li key={hint.label} className={cn("flex items-center justify-between gap-6 border-t border-stroke-subtle px-3 py-1.5")}>
+                            <span className="text-label text-content">{hint.label}</span>
+                            <ShortcutHint shortcuts={hint.shortcuts} />
+                        </li>
+                    ))}
+                </ul>
+            </PopoverContent>
+        </Popover>
     );
 };

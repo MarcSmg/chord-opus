@@ -9,12 +9,22 @@ interface SavedChordCardProps {
     chord: ApiSavedChordResponse;
 }
 
-function formatVoicing(voicing: { frets: (number | null)[] }) {
-    return voicing.frets;
+// `voicing` is a freeform JSONField on the backend — nothing guarantees it
+// still matches the shape the frontend currently saves, so a row written
+// under an older/different format shouldn't crash the whole saved-chords
+// grid.
+function isValidVoicing(voicing: unknown): voicing is { frets: (number | null)[] } {
+    return (
+        typeof voicing === "object" &&
+        voicing !== null &&
+        Array.isArray((voicing as { frets?: unknown }).frets)
+    );
 }
 
 export const SavedChordCard = ({ chord }: SavedChordCardProps) => {
-    const chordShape = new Shape(formatVoicing(chord.voicing as { frets: (number | null)[] }));
+    if (!isValidVoicing(chord.voicing)) return null;
+
+    const chordShape = new Shape(chord.voicing.frets);
     const diagram = shapeToDiagram(chordShape);
     const diagramLayout = { ...buildDiagramLayout(diagram), voicing: chordShape.getFrets() };
 

@@ -31,7 +31,7 @@ export const SavedChordsProvider = ({ children }: { children: ReactNode }) => {
                     const next = new Set<string>();
                     for (const chord of chords) {
                         const voicing = chord.voicing as { frets?: (number | null)[] } | null | undefined;
-                        if (voicing?.frets) {
+                        if (Array.isArray(voicing?.frets)) {
                             next.add(getVoicingSignature(voicing.frets));
                         }
                     }

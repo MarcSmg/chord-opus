@@ -21,7 +21,7 @@ export const ChordWrapper = ({ children, className, frets, ...props }: ChordWrap
             </div>
 
             {isSaved && (
-                <span className="absolute top-2 right-2 flex items-center justify-center rounded-full bg-primary p-1 text-white shadow-detail-sm">
+                <span className="absolute top-2 left-2 flex items-center justify-center rounded-full bg-primary p-1 text-white shadow-detail-sm">
                     <BookmarkSolid width={12} height={12} strokeWidth={2} />
                 </span>
             )}

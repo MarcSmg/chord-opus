@@ -6,6 +6,7 @@ import { cn } from "@/shared/utils/cn";
 import { DownloadDialog } from "./DownloadDialog";
 import { chordApi } from "../../../api/chords";
 import { useSavedChords } from "@/context/SavedChordsContext";
+import type { RenderedDiagram } from "@/rendering/buildDiagramLayout";
 
 const menuButtonClass = "flex items-center justify-center size-8 rounded-full text-content-muted hover:bg-ui-elevated hover:text-primary transition-colors cursor-pointer";
 
@@ -13,14 +14,14 @@ interface ChordMenuProps extends ComponentPropsWithRef<"div"> {
     isActive: boolean;
     onOpen: () => void;
     onClose: () => void;
-    svg: SVGSVGElement | null;
+    diagram: RenderedDiagram | null;
     symbol?: string;
     frets?: readonly (number | null)[];
 }
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
-export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, className }: ChordMenuProps) => {
+export const ChordMenu = memo(({ isActive, onOpen, onClose, diagram, symbol, frets, className }: ChordMenuProps) => {
     const [isDownloadOpen, setIsDownloadOpen] = useState(false);
     const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
     const { markChordSaved } = useSavedChords();
@@ -41,10 +42,10 @@ export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, 
     };
 
     const bookmarkIcon = saveStatus === "saved"
-        ? <BookmarkSolid className="size-4 text-status-success" strokeWidth={2} />
+        ? <BookmarkSolid className="size-6 text-accent-bold" strokeWidth={2} />
         : saveStatus === "error"
-            ? <Bookmark className="size-4 text-status-error" strokeWidth={2} />
-            : <Bookmark className="size-4" strokeWidth={2} />;
+            ? <Bookmark className="size-6 text-status-error" strokeWidth={2} />
+            : <Bookmark className="size-6" strokeWidth={2} />;
 
     return (
         <div className={cn(className, "relative flex flex-col justify-center items-center w-fit rounded-lg hover:bg-ui-surface")} >
@@ -67,7 +68,7 @@ export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, 
                     <>
                         <motion.div
                             initial={{ backdropFilter: "blur(0px)" }}
-                            animate={{ backdropFilter: "blur(8px)" }}
+                            animate={{ backdropFilter: "blur(5px)" }}
                             exit={{ backdropFilter: "blur(0px)" }}
                             transition={{ duration: 0.25, ease: "easeOut" }}
                             className="fixed inset-0 z-60"
@@ -93,7 +94,7 @@ export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, 
                             animate={{ width: "auto", opacity: 1 }}
                             exit={{ width: 40, opacity: 0 }}
                             transition={{ type: "spring", stiffness: 350, damping: 22, mass: 0.6 }}
-                            className="absolute -left-10 -translate-x-1/2 -top-90 z-100 flex flex-row items-center gap-1 p-1 rounded-full bg-ui-surface shadow-detail-md border border-stroke-strong/50 overflow-hidden"
+                            className="absolute -left-13 -translate-x-1/2 -top-85 z-100 flex flex-row items-center gap-1 py-1 px-3 rounded-full bg-ui-surface shadow-detail-md border border-stroke-strong/50 overflow-hidden"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <Tooltip label="Save" placement="top">
@@ -114,11 +115,11 @@ export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, 
                                         onClose();
                                         setIsDownloadOpen(true);
                                     }}
-                                    whileHover={{ y: -3 }}
+                                    whileHover={{ y: -3 }}  
                                     transition={{ type: "spring", stiffness: 500, damping: 15 }}
                                     className={menuButtonClass}
                                 >
-                                    <Download className="size-4" strokeWidth={2} />
+                                    <Download className="size-6" strokeWidth={2} />
                                 </motion.button>
                             </Tooltip>
                             <Tooltip label="Share" placement="top">
@@ -128,7 +129,7 @@ export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, 
                                     transition={{ type: "spring", stiffness: 500, damping: 15 }}
                                     className={menuButtonClass}
                                 >
-                                    <ShareAndroid className="size-4" strokeWidth={2} />
+                                    <ShareAndroid className="size-6" strokeWidth={2} />
                                 </motion.button>
                             </Tooltip>
                         </motion.div>
@@ -137,10 +138,10 @@ export const ChordMenu = memo(({ isActive, onOpen, onClose, svg, symbol, frets, 
 
             </AnimatePresence>
 
-            <DownloadDialog open={isDownloadOpen} onOpenChange={setIsDownloadOpen} svg={svg} />
+            <DownloadDialog open={isDownloadOpen} onOpenChange={setIsDownloadOpen} diagram={diagram} />
         </div>
     )
 }, (prev, next) => {
-    return prev.isActive === next.isActive && prev.svg === next.svg
+    return prev.isActive === next.isActive && prev.diagram === next.diagram
         && prev.symbol === next.symbol && prev.frets === next.frets;
 });

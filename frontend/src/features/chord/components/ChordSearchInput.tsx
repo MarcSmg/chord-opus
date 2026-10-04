@@ -37,10 +37,10 @@ export const ChordSearchInput = ({ id, className = "", hasText, onClear, ...prop
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (!showSuggestions) return;
 
-        if (e.key === "ArrowDown" ) {
+        if (e.key === "ArrowRight" ) {
             e.preventDefault();
             setActiveIndex((i) => (i + 1) % suggestions.length);
-        } else if (e.key === "ArrowUp" ) {
+        } else if (e.key === "ArrowLeft" ) {
             e.preventDefault();
             setActiveIndex((i) => (i - 1 + suggestions.length) % suggestions.length);
         } else if (e.key === "Enter") {
@@ -85,7 +85,7 @@ export const ChordSearchInput = ({ id, className = "", hasText, onClear, ...prop
                 ref={inputRef}
                 type="text"
                 placeholder="Search a chord... (Eg: Cm)"
-                className="w-full pl-15 px-5 py-2 font-heading font-medium border-2 border-stroke-strong rounded-2xl outline-0 outline-accent-secondary/50 shadow-md focus:outline-3 focus:bg-ui-card transition-all duration-100"
+                className="w-full pl-15 px-5 py-2 font-heading font-medium border-2 border-stroke-strong rounded-2xl outline-0 outline-accent-secondary/50 shadow-md focus:outline-3 transition-all duration-100"
                 role="combobox"
                 aria-expanded={showSuggestions}
                 aria-controls="chord-suggestion-list"
@@ -116,7 +116,7 @@ export const ChordSearchInput = ({ id, className = "", hasText, onClear, ...prop
                         initial={{ opacity: 0, scale: 0.85 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.85 }}
-                        transition={{ type: "spring", stiffness: 700, damping: 30 }}
+                        transition={{ type: "spring", stiffness: 700, damping: 40 }}
                         style={{ transformOrigin: "top" }}
                         className="absolute grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-2 top-full left-0 right-0 mt-2 p-2 z-20 bg-ui-card/50 backdrop-blur-lg border-2 border-stroke-strong/60 rounded-2xl shadow-md overflow-hidden"
                     >
@@ -130,8 +130,8 @@ export const ChordSearchInput = ({ id, className = "", hasText, onClear, ...prop
                                 onMouseEnter={() => setActiveIndex(i)}
                                 onClick={() => selectSuggestion(suggestion)}
                                 className={cn(
-                                    "flex px-5 py-2 font-heading font-medium justify-center text-label rounded-xl cursor-pointer transition-all duration-400 outline-0 border border-accent-bold/50",
-                                    i === activeIndex && "bg-accent-bold/40"
+                                    "flex px-5 py-2 font-heading font-medium justify-center text-label rounded-xl cursor-pointer transition-all duration-400 outline-0 border border-accent-secondary/50",
+                                    i === activeIndex && "bg-accent-secondary/20"
                                 )}
                             >
                                 <span className="text-content">{suggestion.slice(0, typedLength)}</span>

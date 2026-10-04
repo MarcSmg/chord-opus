@@ -15,6 +15,8 @@ interface BrowserTabsBaseProps {
     activeTabId: string;
     onActiveTabChange: (tabId: string) => void;
     className?: string;
+    /** Where the tab list sits along the bar. Defaults to "center". */
+    tabsPosition?: "left" | "center" | "right";
 }
 
 type BrowserTabsProps =
@@ -88,16 +90,16 @@ function Tab({
                 {isActive && (
                     <motion.div
                         layoutId="browserTabActiveBg"
-                        className="absolute inset-0 rounded-t-xl bg-ui-card"
+                        className="absolute inset-0 rounded-t-xl bg-ui-bg"
                         transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
                     >
                         <div className="absolute -left-3 bottom-0 h-3 w-3 overflow-hidden">
                             <div className="absolute right-0 bottom-0 z-10 h-6 w-6 rounded-full bg-accent-secondary-soft" />
-                            <div className="absolute inset-0 bg-ui-card" />
+                            <div className="absolute inset-0 bg-ui-bg" />
                         </div>
                         <div className="absolute -right-3 bottom-0 h-3 w-3 overflow-hidden">
                             <div className="absolute left-0 bottom-0 z-10 h-6 w-6 rounded-full bg-accent-secondary-soft" />
-                            <div className="absolute inset-0 bg-ui-card" />
+                            <div className="absolute inset-0 bg-ui-bg" />
                         </div>
                     </motion.div>
                 )}
@@ -129,15 +131,47 @@ function Tab({
  * Pass `dynamicTabs` to let the user add/close tabs at runtime; otherwise
  * the `tabs` list is fixed and no add/close controls are shown.
  */
+const TABS_POSITION_CLASS = {
+    left: "justify-start",
+    center: "justify-center",
+    right: "justify-end",
+} as const;
+
+// Matches `rounded-2xl`'s value, so the animated corner can return to
+// exactly where the Tailwind class would otherwise leave it.
+const FULL_CORNER_RADIUS = "1rem";
+
+const CORNER_PROPERTY = {
+    left: "borderTopLeftRadius",
+    center: null,
+    right: "borderTopRightRadius",
+} as const;
+
 export const BrowserTabs = (props: BrowserTabsProps) => {
-    const { tabs, activeTabId, onActiveTabChange, className = "" } = props;
+    const { tabs, activeTabId, onActiveTabChange, className = "", tabsPosition = "center" } = props;
     const activeTab = tabs.find((tab) => tab.id === activeTabId) ?? tabs[0];
     const canClose = props.dynamicTabs === true && tabs.length > 1;
 
+    // Only square off the card's corner when the active tab is the one
+    // actually sitting in that corner — otherwise the card's edge is further
+    // along than the active tab and should stay fully rounded.
+    const activeTabIndex = tabs.findIndex((tab) => tab.id === activeTab?.id);
+    const isActiveTabAtExtreme =
+        tabsPosition === "left" ? activeTabIndex === 0
+            : tabsPosition === "right" ? activeTabIndex === tabs.length - 1
+                : false;
+
+    const cornerProperty = CORNER_PROPERTY[tabsPosition];
+    // Rounding back off is instant, but re-squaring (when the active tab
+    // returns to the extreme) waits 0.2s — otherwise it'd snap shut before
+    // the tab itself has visually settled back into the corner.
+    const cornerStyle = cornerProperty ? { [cornerProperty]: isActiveTabAtExtreme ? "0px" : FULL_CORNER_RADIUS } : undefined;
+    const cornerTransition = { duration: 0.2, delay: isActiveTabAtExtreme ? 0.1 : 0 };
+
     return (
-        <div className={cn("flex flex-col bg-accent-secondary-soft rounded-2xl p-1", className)}>
+        <div className={cn("flex flex-col h-full bg-accent-secondary-soft rounded-2xl p-1", className)}>
             <div className="flex items-end gap-0 rounded-t-2xl bg-accent-secondary-soft">
-                <ol role="tablist" className="no-scrollbar flex flex-1 justify-center items-end overflow-x-auto">
+                <ol role="tablist" className={cn("no-scrollbar flex flex-1 items-end overflow-x-auto", TABS_POSITION_CLASS[tabsPosition])}>
                     <AnimatePresence initial={false}>
                         {tabs.map((tab) => (
                             <Tab
@@ -156,14 +190,18 @@ export const BrowserTabs = (props: BrowserTabsProps) => {
                     <button
                         type="button"
                         onClick={props.onCreateTab}
-                        className="mb-1.5 ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-content-muted transition-colors hover:bg-ui-card hover:text-content"
+                        className="mb-1.5 ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-content-muted transition-colors hover:bg-ui-bg hover:text-content"
                     >
                         <Plus width={16} height={16} strokeWidth={2} />
                     </button>
                 )}
             </div>
 
-            <div className="flex-1 rounded-2xl bg-ui-card p-4 md:p-6">
+            <motion.div
+                className="flex-1 rounded-2xl bg-ui-bg p-4 md:p-6"
+                animate={cornerStyle}
+                transition={cornerTransition}
+            >
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeTab?.id}
@@ -175,7 +213,7 @@ export const BrowserTabs = (props: BrowserTabsProps) => {
                         {activeTab?.content}
                     </motion.div>
                 </AnimatePresence>
-            </div>
+            </motion.div>
         </div>
     );
 };

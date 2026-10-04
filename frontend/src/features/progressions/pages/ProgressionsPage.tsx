@@ -51,7 +51,7 @@ export const ProgressionsPage = () => {
 
   return (
     <section className="min-h-full px-5 py-6 pb-24 md:px-10 md:pb-10">
-      <Heading className="mb-4">Progressions</Heading>
+      <Heading className="mb-4 text-center">Progressions</Heading>
 
       <div className="flex items-center justify-between gap-4">
         <button
@@ -62,7 +62,7 @@ export const ProgressionsPage = () => {
           <NavArrowDown width={16} height={16} strokeWidth={2} />
         </button>
 
-        <Button variant="primary" icon={<Plus strokeWidth={2.5} />} className="shrink-0 cursor-pointer">
+        <Button variant="primary" icon={<Plus strokeWidth={2.5} />} className="shrink-0 cursor-pointer rounded-full">
           New
         </Button>
       </div>

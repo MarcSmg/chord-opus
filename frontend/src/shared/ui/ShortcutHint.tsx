@@ -50,7 +50,7 @@ export const ShortcutHint = ({ shortcuts, className = "" }: ShortcutHintProps) =
     return (
         <span className={cn("flex items-center gap-1", className)}>
             {shortcuts.map((shortcut, i) => (
-                <span key={i} className="flex items-center gap-1">
+                <span key={i} className="flex items-center gap-1 font-medium">
                     {i > 0 && <span className="text-label text-content-muted">or</span>}
                     <span className={shortcutStyle}>{renderShortcut(shortcut)}</span>
                 </span>

@@ -66,7 +66,7 @@ export const DialogContent = ({ className = "", children }: DialogContentProps) 
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 8 }}
                         transition={{ duration: 0.15, ease: "easeOut" }}
-                        className={cn("fixed top-1/2 left-1/2 z-100 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-stroke-subtle bg-ui-card shadow-detail-md", className)}
+                        className={cn("fixed top-1/2 left-1/2 z-100 w-[80%] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-stroke-subtle bg-ui-card shadow-detail-md", className)}
                     >
                         <DialogClose />
                         {children}

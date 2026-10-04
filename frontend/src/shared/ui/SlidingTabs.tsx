@@ -38,7 +38,7 @@ function Tab({
             onClick={onSelect}
             onMouseEnter={onHover}
             className={cn(
-                "relative z-10 flex shrink-0 items-center gap-1.5 whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors duration-200",
+                "relative z-10 flex shrink-0 items-center gap-1.5 whitespace-nowrap cursor-pointer px-4 py-2 text-sm font-medium transition-colors duration-200",
                 isActive ? "text-content" : "text-content-muted hover:text-content"
             )}
         >

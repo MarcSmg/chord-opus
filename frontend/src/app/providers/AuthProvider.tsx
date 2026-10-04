@@ -19,6 +19,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     function logout() {
+        // Best-effort — the client-side session clears immediately either way;
+        // this just also invalidates the refresh token server-side.
+        authApi.logout().catch(() => {});
         setUser(null);
     }
 

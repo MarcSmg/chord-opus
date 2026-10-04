@@ -94,9 +94,9 @@
     --brand-secondary: #6b8cbf;    /* Brand Colors > Secondary */
 
     --bg-main: #191c21;            /* Interface > Background */
-    --bg-card: #1e232b;
-    --bg-surface: #1e232b;
-    --bg-elevated: #262c36;        /* derived: not specified in guide */
+    --bg-card: #2b323d;
+    --bg-surface: #21262e;
+    --bg-elevated: #3c4553;        /* derived: not specified in guide */
 
     --border-subtle: #3f4652;      /* derived: not specified in guide */
     --border-strong: var(--accent-secondary);
@@ -253,4 +253,13 @@
   --shadow-detail-sm: var(--shadow-sm);
   --shadow-detail-md: var(--shadow-md);
   --blur-glass: var(--glass-blur);
+}
+
+/* Disable the browser's default cross-fade so the WAAPI-driven swipe
+   animation ThemeSwitcher starts on the transition is the only thing
+   that plays. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }

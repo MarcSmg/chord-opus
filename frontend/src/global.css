@@ -112,7 +112,7 @@
     --primary-soft: #183335;       /* was rgba(20, 184, 166, 0.15) over --bg-main */
 
     --accent-secondary: #5fa4fa;   /* Buttons > Button Secondary (distinct from Brand Secondary) */
-    --accent-secondary-soft: #243042;   /* was rgba(95, 164, 250, 0.15) over --bg-main, for hover/pressed states */
+    --accent-secondary-soft: #2b394e;   /* was rgba(95, 164, 250, 0.15) over --bg-main, for hover/pressed states */
 
     --success-bold: #21c45d;       /* Semantic > Success */
     --success-soft: #1a352a;       /* was rgba(33, 196, 93, 0.15) over --bg-main */

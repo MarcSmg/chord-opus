@@ -10,6 +10,7 @@ import { SidebarProvider } from '../providers/SidebarProvider';
 import { SavedChordsProvider } from '../providers/SavedChordsProvider';
 import { MobileProvider } from '../providers/MobileProvider';
 import { DeviceProvider } from '../providers/DeviceProvider';
+import { ChordDetailProvider } from '../providers/ChordDetailProvider';
 
 const libraryChildren = [
   { to: "/library", label: "Saved Chords" },
@@ -52,20 +53,22 @@ export const AppLayout = () => {
         <DeviceProvider>
           <SidebarProvider>
             <SavedChordsProvider>
-              <div
-                className="flex flex-col w-full h-screen"
-              >
-                <TopNav />
-                <div className='overflow-hidden md:flex flex-1'>
-                  <Sidebar menuItems={desktopSidebarItems} />
-                  <main ref={scrollWrapperRef} className='flex-1 flex flex-col h-full overflow-y-auto'>
-                    <div ref={scrollContentRef} className="flex flex-1 flex-col">
-                      <Outlet />
-                      <BottomNav menuItems={mobileNavbarItems} />
-                    </div>
-                  </main>
+              <ChordDetailProvider>
+                <div
+                  className="flex flex-col w-full h-screen"
+                >
+                  <TopNav />
+                  <div className='overflow-hidden md:flex flex-1'>
+                    <Sidebar menuItems={desktopSidebarItems} />
+                    <main ref={scrollWrapperRef} className='flex-1 flex flex-col h-full overflow-y-auto'>
+                      <div ref={scrollContentRef} className="flex flex-1 flex-col">
+                        <Outlet />
+                        <BottomNav menuItems={mobileNavbarItems} />
+                      </div>
+                    </main>
+                  </div>
                 </div>
-              </div>
+              </ChordDetailProvider>
             </SavedChordsProvider>
           </SidebarProvider>
         </DeviceProvider>

@@ -10,7 +10,6 @@ import { SlidingTabs } from '@/shared/ui/SlidingTabs';
 import { useMobile } from '@/context/MobileContext';
 import { FretboardVisualizerPanel } from '../components/FretboardVisualizerPanel';
 import { ChordDetailPanel } from '../components/ChordDetailPanel';
-import { ChordDetailProvider } from '@/app/providers/ChordDetailProvider';
 
 const TAB_IDS = ["search", "fretboard"] as const;
 const DEFAULT_TAB_ID = TAB_IDS[0];
@@ -95,39 +94,37 @@ export const ExplorePage = () => {
   ];
 
   return (
-    <ChordDetailProvider>
-      <section
-        className={`min-h-full flex flex-1 flex-col px-5 py-6 pb-24 md:pb-5`}
-      >
-        <Heading className='mb-4 text-center'>Explore</Heading>
+    <section
+      className={`min-h-full flex flex-1 flex-col px-5 py-6 pb-24 md:pb-5`}
+    >
+      <Heading className='mb-4 text-center'>Explore</Heading>
 
-        {!isMobile ? (
-          <div className="relative flex flex-1 items-start gap-4">
-            <div className="flex flex-1 h-full items-start gap-4">
-              <BrowserTabs
-                className="flex-1"
-                activeTabId={activeTabId}
-                onActiveTabChange={handleActiveTabChange}
-                tabs={tabs}
-              />
-            </div>
-            <div className='sticky top-20 w-fit'>
-              <ChordDetailPanel active={activeTabId === "search"} />
-            </div>
-          </div>
-        ) : (
-          <>
-            <SlidingTabs
+      {!isMobile ? (
+        <div className="relative flex flex-1 items-start gap-4">
+          <div className="flex flex-1 h-full items-start gap-4">
+            <BrowserTabs
               className="flex-1"
               activeTabId={activeTabId}
               onActiveTabChange={handleActiveTabChange}
               tabs={tabs}
             />
-            <ChordDetailPanel />
-          </>
-        )}
-      </section>
-    </ChordDetailProvider>
+          </div>
+          <div className='sticky top-20 w-fit'>
+            <ChordDetailPanel active={activeTabId === "search"} />
+          </div>
+        </div>
+      ) : (
+        <>
+          <SlidingTabs
+            className="flex-1"
+            activeTabId={activeTabId}
+            onActiveTabChange={handleActiveTabChange}
+            tabs={tabs}
+          />
+          <ChordDetailPanel />
+        </>
+      )}
+    </section>
   )
 
 }

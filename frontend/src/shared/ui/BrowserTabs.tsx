@@ -94,11 +94,11 @@ function Tab({
                         transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
                     >
                         <div className="absolute -left-3 bottom-0 h-3 w-3 overflow-hidden">
-                            <div className="absolute right-0 bottom-0 z-10 h-6 w-6 rounded-full bg-accent-secondary-soft" />
+                            <div className="absolute right-0 bottom-0 z-1 h-6 w-6 rounded-full bg-accent-secondary-soft" />
                             <div className="absolute inset-0 bg-ui-bg" />
                         </div>
                         <div className="absolute -right-3 bottom-0 h-3 w-3 overflow-hidden">
-                            <div className="absolute left-0 bottom-0 z-10 h-6 w-6 rounded-full bg-accent-secondary-soft" />
+                            <div className="absolute left-0 bottom-0 z-1 h-6 w-6 rounded-full bg-accent-secondary-soft" />
                             <div className="absolute inset-0 bg-ui-bg" />
                         </div>
                     </motion.div>

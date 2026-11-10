@@ -16,7 +16,7 @@ const ProfileTrigger = () => {
             aria-label="Profile"
             aria-haspopup="menu"
             aria-expanded={isOpen}
-            className="grid size-9 place-items-center rounded-full border border-stroke-subtle bg-ui-card text-content-muted shadow-detail-sm outline-none transition-colors cursor-pointer hover:bg-accent-soft focus-visible:ring-2 focus-visible:ring-accent-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-ui-surface"
+            className="grid size-9 place-items-center rounded-full bg-ui-card text-content-muted shadow-detail-sm outline-none transition-colors cursor-pointer hover:bg-accent-soft focus-visible:ring-2 focus-visible:ring-accent-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-ui-surface"
         >
             <ProfileCircle aria-hidden="true" height={19} width={19} strokeWidth={2} />
         </button>

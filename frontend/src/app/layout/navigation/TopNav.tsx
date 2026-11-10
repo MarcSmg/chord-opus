@@ -6,7 +6,7 @@ import { ProfilePopover } from "@/shared/ui/ProfilePopover"
 export const TopNav = () => {
   return (
     <div>
-      <nav className="flex items-center justify-between h-15 top-0 left-0 right-0 //border-b border-stroke-subtle z-50">
+      <nav className="flex items-center justify-between bg-linear-to-b from-100% to-10% from-ui-bg to-ui-surface h-15 top-0 left-0 right-0 //border-b border-stroke-subtle z-50">
         <AppHeader
           actions={
             <div className="flex items-center gap-2">

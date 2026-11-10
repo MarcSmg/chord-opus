@@ -42,28 +42,30 @@ export const DownloadDialog = ({ open, onOpenChange, diagram }: DownloadDialogPr
                 <DialogHeader>
                     <DialogTitle>Download chord</DialogTitle>
                     <DialogDescription>Choose a format to download this chord diagram.</DialogDescription>
-                    {diagram && (
-                        <ChordWrapper className="mt-2 aspect-square max-w-full border-2 border-stroke-subtle rounded-2xl self-center [&_svg]:h-full [&_svg]:w-full">
-                            <ChordDiagram ref={svgRef} diagram={diagram} />
-                        </ChordWrapper>
-                    )}
                 </DialogHeader>
 
                 <DialogBody>
-                    <div className="grid grid-cols-4 gap-3">
-                        {downloadOptions.map((option) => (
-                            <button
-                                key={option.label}
-                                type="button"
-                                disabled={option.disabled}
-                                onClick={() => handleSelect(option)}
-                                className="flex aspect-square flex-col items-center justify-center p-2 gap-1 cursor-pointer rounded-xl border border-stroke-subtle bg-ui-surface text-label font-medium text-content transition-colors hover:border-accent-secondary hover:text-accent-secondary disabled:cursor-not-allowed disabled:border-stroke-subtle disabled:bg-ui-elevated disabled:text-content-disabled disabled:hover:border-stroke-subtle disabled:hover:text-content-disabled"
-                            >
-                                {option.icon}
-                                {option.label}
-                                {option.disabled && <span className="text-label text-content-disabled">Soon</span>}
-                            </button>
-                        ))}
+                    <div>
+                        {diagram && (
+                            <ChordWrapper className="aspect-square max-w-full border border-stroke-subtle rounded-2xl self-center [&_svg]:h-full [&_svg]:w-full">
+                                <ChordDiagram ref={svgRef} diagram={diagram} />
+                            </ChordWrapper>
+                        )}
+                        <div className="grid grid-cols-4 gap-2 mt-2">
+                            {downloadOptions.map((option) => (
+                                <button
+                                    key={option.label}
+                                    type="button"
+                                    disabled={option.disabled}
+                                    onClick={() => handleSelect(option)}
+                                    className="flex aspect-square flex-col items-center justify-center p-2 gap-1 cursor-pointer rounded-xl border border-stroke-subtle bg-ui-surface text-label font-medium text-content transition-colors hover:border-accent-secondary hover:text-accent-secondary disabled:cursor-not-allowed disabled:border-stroke-subtle disabled:bg-ui-elevated disabled:text-content-disabled disabled:hover:border-stroke-subtle disabled:hover:text-content-disabled"
+                                >
+                                    {option.icon}
+                                    {option.label}
+                                    {option.disabled && <span className="text-label text-content-disabled">Soon</span>}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </DialogBody>
             </DialogContent>

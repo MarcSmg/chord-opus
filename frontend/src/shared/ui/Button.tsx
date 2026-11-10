@@ -3,7 +3,7 @@ import { cn } from "@/shared/utils/cn"
 
 interface ButtonProps {
     variant?: "primary" | "secondary";
-    type?: "submit";
+    type?: "submit" | "button";
     icon?: ReactNode;
     children?: ReactNode;
     className?: string;

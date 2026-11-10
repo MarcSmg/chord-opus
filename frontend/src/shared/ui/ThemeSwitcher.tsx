@@ -56,7 +56,7 @@ export const ThemeSwitcher = () => {
     return (
         <div
             aria-label="Theme preference"
-            className="relative flex h-full items-center rounded-full border border-stroke-subtle bg-ui-card p-1 shadow-detail-sm"
+            className="relative flex h-full items-center rounded-full bg-ui-card p-1 shadow-detail-sm"
             role="group"
         >
             {themes.map(({ key, icon: Icon, label }) => {

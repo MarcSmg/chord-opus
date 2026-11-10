@@ -126,7 +126,6 @@ function listDots(c: Constraints, diagram: Diagram): DotData[] {
         return {
             x: c.originX + dot.stringIndex * c.stringSpacing,
             y: c.originY + (dot.fret - 1) * c.fretSpacing + c.fretSpacing / 2,
-
         };
     })
     return dots;

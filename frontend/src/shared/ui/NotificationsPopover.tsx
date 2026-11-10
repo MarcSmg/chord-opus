@@ -12,7 +12,7 @@ const NotificationsTrigger = () => {
                 type="button"
                 aria-label="Notifications"
                 aria-expanded={isOpen}
-                className="grid size-9 place-items-center rounded-full border border-stroke-subtle cursor-pointer bg-ui-card text-content-muted shadow-detail-sm outline-none transition-colors hover:bg-accent-soft focus-visible:ring-2 focus-visible:ring-accent-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-ui-surface"
+                className="grid size-9 place-items-center rounded-full cursor-pointer bg-ui-card text-content-muted shadow-detail-sm outline-none transition-colors hover:bg-accent-soft focus-visible:ring-2 focus-visible:ring-accent-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-ui-surface"
             >
                 <Bell aria-hidden="true" height={19} strokeWidth={2} width={19} />
             </button>

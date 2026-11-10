@@ -7,10 +7,11 @@ type ChordDiagramProps = {
     diagram: RenderedDiagram,
     width?: number,
     height?: number,
+    bgOpacity?: number,
     onContextMenu?: (e: React.MouseEvent) => void
 }
 
-export const ChordDiagram = forwardRef<SVGSVGElement, ChordDiagramProps>(({diagram, width=diagram.constraints.width, height=diagram.constraints.height, onContextMenu}: ChordDiagramProps, ref) => {
+export const ChordDiagram = forwardRef<SVGSVGElement, ChordDiagramProps>(({diagram, width=diagram.constraints.width, height=diagram.constraints.height,  bgOpacity=100, onContextMenu}: ChordDiagramProps, ref) => {
 
     const c = diagram.constraints;
     const chordName = diagram.voicing ? formatChordName(diagram.voicing) : null;
@@ -18,7 +19,7 @@ export const ChordDiagram = forwardRef<SVGSVGElement, ChordDiagramProps>(({diagr
 
   return (
     <svg onContextMenu={onContextMenu} ref={ref} viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
-        <rect width="100%" height="100%" fill="white"/>
+        <rect width="100%" height="100%" fill="white" opacity={bgOpacity}/>
         {chordName && (
             <text
                 x={centerX}
@@ -50,7 +51,7 @@ export const ChordDiagram = forwardRef<SVGSVGElement, ChordDiagramProps>(({diagr
 
         {
             diagram.dots.map((d, i) =>(
-                <circle key={i} cx={d.x} cy={d.y} r={5} fill="black" />
+                <circle key={i} cx={d.x} cy={d.y} r={7} fill="black" />
             ))
         }
 

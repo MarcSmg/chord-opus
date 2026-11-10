@@ -80,7 +80,7 @@ export const ProgressionsPage = () => {
               height={18}
             />
           }
-          className="w-full rounded-xl border border-stroke-subtle bg-ui-card py-3 pl-11 text-body-sm text-content font-medium outline-0 placeholder:text-content-muted"
+          className="w-full rounded-xl border border-stroke-subtle py-3 pl-11 text-body-sm text-content font-medium outline-0 placeholder:text-content-muted"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onClear={() => setQuery("")}

@@ -2,9 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { chordApi } from "../../../api/chords";
 import Heading from "../../../shared/ui/Heading";
 import type { ApiSavedChordResponse } from "@/types/api";
-import { SavedChordCard } from "../components/SavedChordCard";
 import { Search } from "iconoir-react";
 import { Input } from "@/shared/ui/Input";
+import { ChordGridList } from "../components/ChordGridList";
+import { ChordDetailPanel } from "../components/ChordDetailPanel";
+import { savedChordToDiagram } from "../utils/savedChordToDiagram";
+import type { RenderedDiagram } from "@/rendering/buildDiagramLayout";
 
 export const LibraryPage = () => {
   const [savedChords, setSavedChords] = useState<ApiSavedChordResponse[]>([]);
@@ -48,8 +51,18 @@ export const LibraryPage = () => {
     [savedChords, query]
   );
 
+  // Rows written under an older/different voicing shape are dropped rather
+  // than crashing the grid — see savedChordToDiagram.
+  const diagrams = useMemo(
+    () =>
+      filteredSavedChords
+        .map(savedChordToDiagram)
+        .filter((diagram): diagram is RenderedDiagram => diagram !== null),
+    [filteredSavedChords]
+  );
+
   return (
-    <section className="min-h-full px-5 py-6 pb-24 md:px-10 md:pb-10">
+    <section className="relative min-h-full px-5 py-6 pb-24 md:px-10 md:pb-10">
       <Heading className="mb-4 text-center">Saved Chords</Heading>
 
       <div className="relative mb-8">
@@ -65,7 +78,7 @@ export const LibraryPage = () => {
               height={18}
             />
           }
-          className="w-full rounded-xl border border-stroke-subtle bg-ui-card py-3 pl-11 text-body-sm text-content font-medium outline-0 placeholder:text-content-muted"
+          className="w-full rounded-xl border border-stroke-subtle py-3 pl-11 text-body-sm text-content font-medium outline-0 placeholder:text-content-muted"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onClear={() => setQuery("")}
@@ -82,22 +95,19 @@ export const LibraryPage = () => {
         </p>
       )}
 
-      {!isLoading && !error && filteredSavedChords.length === 0 && (
+      {!isLoading && !error && diagrams.length === 0 && (
         <p className="text-content-muted">
           {savedChords.length === 0
             ? "You have not saved any chords yet."
             : "No chords match your search."}
-
         </p>
       )}
 
-      {!isLoading && !error && filteredSavedChords.length > 0 && (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-x-3 gap-y-2 justify-items-center w-full md:gap-y-4 max-sm:grid-cols-2">
-          {filteredSavedChords.map((chord) => (
-            <SavedChordCard key={chord.id} chord={chord} />
-          ))}
-        </div>
+      {!isLoading && !error && diagrams.length > 0 && (
+        <ChordGridList svgs={diagrams} notFound={false} />
       )}
+
+      <ChordDetailPanel />
     </section>
   );
 };

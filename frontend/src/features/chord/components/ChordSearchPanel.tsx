@@ -1,6 +1,6 @@
 import type { RenderedDiagram } from "../../../rendering/buildDiagramLayout";
 import { ChordSearchHeader } from "./ChordSearchHeader";
-import { ChordSearchResults } from "./ChordSearchResults";
+import { ChordGridList } from "./ChordGridList";
 
 interface ChordSearchPanelProps {
     input: string;
@@ -18,6 +18,6 @@ export const ChordSearchPanel = ({ input, onInputChange, onClear, svgs, notFound
             onClear={onClear}
             hasResults={svgs.length > 0}
         />
-        <ChordSearchResults svgs={svgs} notFound={notFound} />
+        <ChordGridList svgs={svgs} notFound={notFound} />
     </>
 );

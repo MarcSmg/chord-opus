@@ -112,13 +112,13 @@ export const ChordSearchInput = ({ id, className = "", hasText, onClear, ...prop
                 {showSuggestions && (
                     <motion.ul
                         id="chord-suggestion-list"
-                        role="listbox"
+                        role="listbox"  
                         initial={{ opacity: 0, scale: 0.85 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.85 }}
                         transition={{ type: "spring", stiffness: 700, damping: 40 }}
                         style={{ transformOrigin: "top" }}
-                        className="absolute grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-2 top-full left-0 right-0 mt-2 p-2 z-20 bg-ui-card/50 backdrop-blur-lg border-2 border-stroke-strong/60 rounded-2xl shadow-md overflow-hidden"
+                        className="absolute grid grid-cols-[repeat(auto-fill,minmax(60px,1fr))] gap-1 top-full left-0 right-0 mt-2 p-1 z-20 bg-ui-card/50 backdrop-blur-lg border-2 border-stroke-strong/60 rounded-2xl shadow-md overflow-hidden"
                     >
                         {suggestions.map((suggestion, i) => (
                             <li
